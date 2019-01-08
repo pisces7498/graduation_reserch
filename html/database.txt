@@ -1,0 +1,51 @@
+mysql -u root -p	//MySQLへrootでログイン
+
+show databases;		//データベース作成確認
+use sample		//sampleデータベースへ接続
+show tables;		//テーブル確認
+
+create table user(ID text not null,名前 char(50),性別 char(3),年齢 int,primary key(ID(128)));
+show fields from user;	//
+
+exit			//終了
+
+
+
+(11/11(日))
+<html>
+<head><title>メニュー</title></head>
+<body>
+<?php
+	$user_id = $_POST['user_id'];
+	$password = $_POST['password'];
+	
+	//mysqlに接続
+	$link = mysql_connect('localhost','testuser','password');
+	//DBの選択
+	$db_selected = mysql_select_db('sample',$link);
+	//SQL文の発行
+	$result = mysql_query('SELECT * FROM User');
+	//結果を連想配列に変換
+	//$row = mysql_fetch_assoc($result);
+	//表示
+	//var_dump($row);
+	
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row){
+			break;
+		}
+		var_dump($row);
+		print($row['user_id']);
+		print("<br/>");
+	}
+	
+	//close処理
+	$close_flag = mysql_close($link);
+	
+	print("<br/><br/>ユーザID：$user_id<br/>パスワード：$password<br/>");
+?>
+	<br><br>
+	<a href="start.html">ログアウト</a><br>
+</body>
+</html>

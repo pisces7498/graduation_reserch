@@ -1,0 +1,157 @@
+<html>
+<title>使用電力量</title>
+<body>
+<?php
+	session_start();
+	require_once "definition.php";
+	
+	$userID = $_SESSION[USER_ID];
+	
+	//Tagの情報
+	$tagID = array();
+	$tagName = array();
+	$applianceID = array();
+	
+	//Applianceの情報
+	$AapplianceID = array();
+	$name = array();
+	
+	//Info,Info2,Outlet,Applianceの情報
+	$outletID1 = array();
+	$start1 = array();
+	$stop1 = array();
+	$No2 = array();
+	$applianceTagID2 = array();
+	$InTagID2 = array();
+	$InRoom2 = array();
+	$usedPower2 = array();
+	$place = array();
+	$applianceName = array();
+	
+	//applianceの情報をすべて格納
+	$link = mysql_connect('localhost','testuser','password');
+	$db_selected = mysql_select_db('sample2',$link);
+	$query = sprintf("SELECT * FROM Appliance");
+	$result = mysql_query($query);
+	$j = 0;
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row) break;
+		$AapplianceID[$i] = $row['applianceID'];
+		$name[$i] = $row['name'];
+	}
+	$close_flag = mysql_close($link);
+	$ApplianceMAX = $i;
+	
+	//userのタグ情報をすべて格納,家電情報と合体
+	$link = mysql_connect('localhost','testuser','password');
+	$db_selected = mysql_select_db('sample2',$link);
+	$query = sprintf("SELECT * FROM Tag");
+	$result = mysql_query($query);
+	$j = 0;
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row) break;
+		$instead = $row['userID'];
+		if($instead==$userID){
+			$tagID[$j] = $row['tagID'];
+			$tagName[$j] = $row['tagName'];
+			$applianceID[$j] = $row['applianceID'];
+			$j++;
+		}
+	}
+	$close_flag = mysql_close($link);
+	$TagMAX = $j;
+	
+	//タグ毎にInfo2の情報を格納
+	$link = mysql_connect('localhost','testuser','password');
+	$db_selected = mysql_select_db('sample2',$link);
+	$query = sprintf("SELECT * FROM Info2");
+	$result = mysql_query($query);
+	$k = 0;
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row) break;
+		for($j=0;$j<$TagMAX;$j++){
+			$InTagID = $row['InTagID'];
+			if($InTagID==$tagID[$j]){
+				if($row['usedPower']==0) break;
+				else{
+					$No2[$k] = $row['No'];
+					$applianceTagID2[$k] = $row['applianceTagID'];
+					$InTagID2[$k] = $row['InTagID'];
+					$InRoom2[$k] = $row['InRoom'];
+					$usedPower2[$k] = $row['usedPower'];
+					$k++;
+					break;
+				}
+			}
+		}
+	}
+	$close_flag = mysql_close($link);
+	$Info2MAX = $k;
+	
+	//Info2毎にNoを参考にInfoの値を格納
+	$link = mysql_connect('localhost','testuser','password');
+	$db_selected = mysql_select_db('sample2',$link);
+	$query = sprintf("SELECT * FROM Info");
+	$result = mysql_query($query);
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row) break;
+		for($j=0;$j<$Info2MAX;$j++){
+			$instead = $row['No'];
+			if($instead==$No2[$j]){
+				$outletID1[$j] = $row['outletID'];
+				$start1[$j] = $row['start'];
+				$stop1[$j] = $row['stop'];
+			}
+		}
+	}
+	$close_flag = mysql_close($link);
+	
+	//Outletから場所を特定
+	$link = mysql_connect('localhost','testuser','password');
+	$db_selected = mysql_select_db('sample2',$link);
+	$query = sprintf("SELECT * FROM Outlet");
+	$result = mysql_query($query);
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row) break;
+		for($j=0;$j<$Info2MAX;$j++){
+			$instead = $row['outletID'];
+			if($instead==$outletID1[$j]){
+				$place[$j] = $row['place'];
+			}
+		}
+	}
+	$close_flag = mysql_close($link);
+	
+	//詳細
+	echo "<table border=1>";
+	echo "<tr><td>タグ名</td><td>場所</td><td>使用開始時刻</td><td>使用終了時刻</td><td>在室時間(s)</td><td>使用電力量(W)</td></tr>";
+	for($i=0;$i<$Info2MAX;$i++){
+		echo "<tr>";
+		for($j=0;$j<$TagMAX;$j++){
+			if($InTagID2[$i]==$tagID[$j]){
+				echo "<td>".$tagName[$j]."</td>";
+				break;
+			}
+		}
+		echo "<td>".$place[$i]."</td>";
+		echo "<td>".$start1[$i]."</td>";
+		echo "<td>".$stop1[$i]."</td>";
+		echo "<td>".$InRoom2[$i]."</td>";
+		echo "<td>".$usedPower2[$i]."</td>";
+		
+		echo "</tr>";
+	}
+	echo "</table>";
+	
+	print("<br/>");
+	echo "<a href=\"./information.php\">使用電力量に戻る</a>";
+	echo "<br><br>";
+	echo "<a href=\"./menu.php\">メニューに戻る</a>";
+?>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<html>
+<head><title>登録完了</title></head>
+<body>
+<?php
+	$user_name = $_POST['user_name'];
+	$user_id = $_POST['user_id'];
+	$password = $_POST['password'];
+	
+	$mysqli = new mysqli('localhost', 'testuser', 'password', 'sample');
+	if($mysqli->connect_error) {
+		print("DB接続失敗：".$mysqli->connect_error);
+		exit();
+	}
+	$mysqli->query("INSERT INTO `User` (`user_id`, `user_name`, `password`) VALUES ('$user_id', '$user_name', '$password')");
+	if (!$mysqli->commit()) {
+		print("Transaction commit failed");
+		exit();
+	}
+	$mysqli->close();
+
+	print("名前：$user_name<br/>ユーザID：$user_id<br/>パスワード：$password<br/>");
+	print("登録完了")
+?>
+	<br><br>
+	<a href="start.html">初期画面</a><br>
+</body>
+</html>

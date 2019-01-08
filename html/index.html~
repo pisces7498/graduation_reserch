@@ -1,0 +1,23 @@
+<html>
+<head><title>テストページ</title></head>
+<body>
+<p>試作デモ</p>
+試作システム：<a href="production/start.html">start.html</a><br>
+<br><br><br>
+<p>デバッグ</p>
+データベース：<a href="phpMyAdmin">phpMyAdmin</a><br>
+<br><br><br>
+<p>php勉強用</p>
+<a href="http://www.standpower.com/" target="_blank">http://www.standpower.com/<br></a>
+<a href="http://ponk.jp/php/basic/php_mysql" target="_blank">http://ponk.jp/php/basic/php_mysql<br></a><br><br>
+入力フォーム：<a href="test/input.html">input.html</a><br>
+日付の表示：<a href="test/date.php">date.php</a><br>
+アップロード：<a href="test/uploader.html">uploader.html</a><br>
+ファイルの読み書き：<a href="test/accesslog.php">accesslog.php</a><br>
+HTTP関数とクッキー：<a href="test/cookie.php">cookie.php</a><br>
+セッション管理：<a href="test/session.html">session.html</a><br>
+正規表現：<a href="test/eregi.php">eregi.php</a><br>
+セッション：<a href="test/session/input.php">input.php</a><br>
+天気予報：<a href="test/weatherSample.php">weatherSample.php</a><br>
+</body>
+</html>

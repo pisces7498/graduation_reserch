@@ -1,0 +1,50 @@
+<html>
+<head><title>メニュー</title></head>
+<body>
+<?php
+	$user_id = $_POST['user_id'];
+	$password = $_POST['password'];
+	
+	$link = mysql_connect('localhost','testuser','password');		//mysqlに接続
+	$db_selected = mysql_select_db('sample',$link);			//DBの選択
+	$result = mysql_query('SELECT * FROM User');			//SQL文の発行
+	//$row = mysql_fetch_assoc($result);				//結果を連想配列に格納
+	//var_dump($row);						//表示
+	
+	for($i=0;;$i++){
+		$row = mysql_fetch_assoc($result);
+		if(!$row){
+			print("ユーザIDが登録されていません。");
+			$logout = "ログイン画面に戻る";
+			break;
+		}
+		if($row['user_id']==$user_id){
+			if($row['password']==$password){
+				print($row['user_name']."さん".);
+				print("<br/><br/>");
+				print '<a href="login.html">'."電力使用料".'</a>';
+				print("<br/>");
+				print '<a href="login.html">'."タグ登録".'</a>';
+				$logout = "ログアウト";
+				break;
+			}
+			else{
+				print("ユーザIDまたはパスワードが違います。");
+				$logout = "ログイン画面に戻る";
+				break;
+			}
+		}
+		//var_dump($row);			//一行全列表示
+		//print($row['user_id']);		//ユーザIDのみ表示
+		//print("<br/>");		
+	}
+	
+	$close_flag = mysql_close($link);		//close処理
+	
+	print("<br/><br/><br/>");
+	print '<a href="login.html">'.$logout.'</a>';
+	
+	//print("<br/><br/>ユーザID：$user_id<br/>パスワード：$password<br/>");
+?>
+</body>
+</html>

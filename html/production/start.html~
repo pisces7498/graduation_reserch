@@ -1,0 +1,11 @@
+<html>
+<head><title>初期画面</title></head>
+<body>
+<p>選択画面</p>
+
+<a href="signup/signup.html">新規登録</a>
+<br>
+<a href="login/login.php">ログイン</a>
+
+</body>
+</html>

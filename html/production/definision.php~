@@ -1,0 +1,5 @@
+<?php
+	//define('USER_ID',"user_id");
+	define('USER_ID',"user_id");
+	define('PASSWORD',"password");
+?>

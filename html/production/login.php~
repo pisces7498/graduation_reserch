@@ -1,0 +1,23 @@
+<html>
+<head><title>ログイン画面</title></head>
+<body>
+	<form method = "post" action = "menu.php">
+		<?php
+		session_destroy();
+		require_once "definition.php";
+		
+		$userID_txt = "";
+		$password_txt = "";
+		
+//		if(isset($_SESSION[USER_ID])) $userID_txt = $_SESSION[USER_ID];
+//		if(isset($_SESSION[PASSWORD])) $password_txt = $_SESSION[PASSWORD];
+		
+		echo "ユーザ名<br><input type = \"text\" name = \"my_userID\" value=\"$userID_txt\"><br>";
+		echo "パスワード<br><input type = \"password\" name = \"my_password\" value=\"$password_txt\"><br>";
+		echo "<input type =\"submit\" value=\"ログイン\"><br>";
+		?>
+	<a href = "start.html">選択画面に戻る</a>
+	</form>
+	
+</body>
+</html>
